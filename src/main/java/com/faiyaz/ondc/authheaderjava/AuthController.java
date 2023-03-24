@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 // import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.PrintWriter;
+// import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.Security;
@@ -22,8 +22,8 @@ import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
 import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters;
 import org.bouncycastle.crypto.signers.Ed25519Signer;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import java.io.File;
-import java.io.FileNotFoundException;
+// import java.io.File;
+// import java.io.FileNotFoundException;
 
 @Controller
 public class AuthController {
@@ -35,19 +35,15 @@ public class AuthController {
 
     @PostMapping("/generateheaderjava")
     @ResponseBody
-    public String auth(@RequestBody String req){
-        setup();
+    public String auth(@RequestBody String req) {
+    setup();
 
-        try (PrintWriter writer = new PrintWriter(
-                new File("E:\\faiyaz\\Book1.xlsx"))) {
-            for (int i = 0; i < 1; i++) {
-            
-                StringBuilder sb = new StringBuilder();
-//                System.out.println(i);
-                UUID uuid = UUID.randomUUID();
-                String generatedString = uuid.toString();
+    try {
+        StringBuilder sb = new StringBuilder();
+        UUID uuid = UUID.randomUUID();
+        String generatedString = uuid.toString();
 
-                System.out.println("Your UUID is: " + generatedString);
+        System.out.println("Your UUID is: " + generatedString);
 
         
                 //String req = "{\"context\":{\"domain\":\"nic2004:52110\",\"country\":\"IND\",\"city\":\"std:080\",\"action\":\"search\",\"core_version\":\"1.1.0\",\"bap_id\":\"buyer-app-preprod.ondc.org\",\"bap_uri\":\"https://buyer-app-preprod.ondc.org/protocol/v1\",\"transaction_id\":\"aced8868-b750-429c-8ae9-d85a6e1f8f95\",\"message_id\":\"ffe8452b-c9ce-4095-a7c6-3df3560ced28\",\"timestamp\":\"2023-03-07T08:27:39.927Z\",\"ttl\":\"PT30S\"},\"message\":{\"intent\":{\"item\":{\"descriptor\":{\"name\":\"pizzaa\"}},\"fulfillment\":{\"type\":\"Delivery\",\"end\":{\"location\":{\"gps\":\"12.96774,77.588913\"}}},\"payment\":{\"@ondc/org/buyer_app_finder_fee_type\":\"percent\",\"@ondc/org/buyer_app_finder_fee_amount\":\"2.0\"}}}}";
@@ -83,39 +79,32 @@ public class AuthController {
                     String signedReq = generateSignature(signingString, privateKey);
 
                     System.out.println("\nSignature : " + signedReq);
-                    String authHeader = "Signature keyId=\"" + kid + "\",algorithm=\"ed25519\", created=\""
-                            + testTimestamp + "\", expires=\"" + (testTimestamp + 60000)
-                            + "\", headers=\"(created) (expires) digest\", signature=\"" + signedReq + "\"";
 
-                    System.out
-                            .println("\n==============================Signed Request=================================");
-                    System.out.println(authHeader);
-                    sb.append(authHeader);
-                    sb.append("\n");
+        String authHeader = "Signature keyId=\"" + kid + "\",algorithm=\"ed25519\", created=\""
+            + testTimestamp + "\", expires=\"" + (testTimestamp + 60000)
+            + "\", headers=\"(created) (expires) digest\", signature=\"" + signedReq + "\"";
 
-                    writer.write(sb.toString());
+            System.out.println("Authorization Header:   "+ authHeader);
 
-                    System.out.println("File write done!!!");
-                    // To Verify Signature
-                    System.out.println(
-                            "\n==============================Verify Signature================================");
+            // To Verify Signature
+            System.out.println(
+                "\n==============================Verify Signature================================");
 
-
-                    verifySignature(signedReq, signingString, publicKey);
-                    return authHeader;
-
-                } catch (Exception e) {
-                    
-                    e.printStackTrace();
-                }
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-
+        verifySignature(signedReq, signingString, publicKey);
+                
+        return authHeader;
+                
+    } catch (Exception e) {
+        e.printStackTrace();
     }
 
+    }catch(Exception e){
+        System.out.println(e.getMessage());
+    }
+
+    return null;    
+    }
+  
 
     public static String generateSignature(String req, String pk) {
         String signature = null;
@@ -152,6 +141,7 @@ public class AuthController {
 
     }
 
+
     public static boolean verifySignature(String sign, String requestData, String dbPublicKey) {
         boolean isVerified = false;
         try {
@@ -175,3 +165,4 @@ public class AuthController {
 
     
 }
+

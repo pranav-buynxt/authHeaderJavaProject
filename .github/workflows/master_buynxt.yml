@@ -49,5 +49,5 @@ jobs:
         with:
           app-name: 'buynxt'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_348A79C63EB9426F9F5DCE8581C16CC5 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_31454BD0A1094B7DA36AB8B594CA3DE2 }}
           package: '*.jar'
